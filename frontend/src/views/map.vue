@@ -301,11 +301,6 @@ import DeleteButton from '@/components/delete.vue'
 import firebase from '../helpers/firebaseconfig'
 // import SavedSearches from '../helpers/savedSearches';
 
-const user = JSON.parse(localStorage.getItem('authUser'));
-const userEmail = user.email;
-const uid = userEmail.replace(/\W/g, '');
-const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
-
 export default {
   name: 'Mapper',
   components: {HeatMap,NavBar, FontAwesomeIcon,Card, FavouriteButton, DeleteButton},
@@ -356,7 +351,6 @@ export default {
     },
     async getLocation() {
       // this function is working by saying its being pressed
-      console.log("im being pressed")
 
       if (this.results != []) {
         this.results = [];
@@ -384,7 +378,6 @@ export default {
 
           //centering map to LL
           var latlng = x.split(",");
-          console.log("this is ll",latlng);
           this.center = {lat:Number(latlng[0]),lng:Number(latlng[1])};
           this.lat = Number(latlng[0]);
           this.lng = Number(latlng[1]);
@@ -399,14 +392,12 @@ export default {
           axios.get(`${BASE_URL_1}${x}${BASE_URL_2}${this.selected_section}`).then((response) => {
           this.ifData = true
           const recs = response.data;
-          console.log(recs)
           var items = recs.response.groups[0].items;
 
           var results = this.results;
           for (let i = 0; i < items.length; i++) {
             // here we are filtering through the api response to get the nested information that we need
             const info = items[i].venue;
-            console.log(info)
             this.id = info.id;
             
             this.name = info.name;
@@ -419,7 +410,6 @@ export default {
                         }            
             this.final_full_add = full_address.substring(0, full_address.length-2)
 
-            console.log(this.final_full_add);
             
             this.venue_lat = info.location.lat;
             this.venue_lng = info.location.lng;
@@ -463,7 +453,6 @@ export default {
           this.heatData.push(heatPoint)
 
         }
-          console.log("this is results",results);
 
           var categories = [];
           
@@ -510,9 +499,6 @@ export default {
             
           // });
 
-          console.log(categories);
-          console.log(results)
-
         
         });
 
@@ -532,10 +518,8 @@ export default {
     },
 
     setlatlng(lat,lng) {
-      console.log("before",this,lat,this.lng);
       this.lat = lat;
       this.lng = lng;
-      console.log("after",this,lat,this.lng);
       HeatMap.se
     }, 
     clearData() {
@@ -550,11 +534,10 @@ export default {
       
     // },
     saveSearch() {
-
-      // const user = JSON.parse(localStorage.getItem('authUser'));
-      // const userEmail = user.email;
-      // const uid = userEmail.replace(/\W/g, '');
-      // const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
+      const user = JSON.parse(localStorage.getItem('authUser'));
+      const userEmail = user.email;
+      const uid = userEmail.replace(/\W/g, '');
+      const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
       var location = this.getLocationInput.toLowerCase();
       db.update({[location]: true})
         .then(() => {
@@ -566,23 +549,16 @@ export default {
       
     },
     async getAll() {
-        // const email = firebase.auth().currentUser.email;
-        // const email = "gmail.com";
-        // const user = JSON.parse(localStorage.getItem('authUser'))
-        // const userEmail = user.email
-        // var userEmail = '12456@gmail.com';
-        // console.log(JSON.parse(localStorage.getItem('authUser')));
-        // const uid = userEmail.replace(/\W/g, '');
-        // const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
-        console.log(uid)
+        const user = JSON.parse(localStorage.getItem('authUser'))
+        const userEmail = user.email
+        const uid = userEmail.replace(/\W/g, '');
+        const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
         var searches = [];
         
         await db.once('value', (snapshot) => {
-            // console.log(snapshot.val())
             for (const [key] of Object.entries(snapshot.val())) {
                 searches.push(key) }
-            console.log("im running");
-            console.log(searches);
+
             
         }, (errorObject) => {
             console.log('The read failed: ' + errorObject.name);
@@ -592,10 +568,8 @@ export default {
 
     async showSearch() {
       try {
-        console.log("searches before",this.searches);
         this.searches = [];
         this.searches = await this.getAll()
-        console.log("searches after",this.searches);
         this.searches = JSON.parse(JSON.stringify(this.searches))
         for (var loc of this.searches) {
           document.getElementById("dropdownlist").innerHTML += `<option value="`+loc+`"
@@ -607,6 +581,10 @@ export default {
       }
     },
     deleteSearch() {
+    const user = JSON.parse(localStorage.getItem('authUser'))
+    const userEmail = user.email
+    const uid = userEmail.replace(/\W/g, '');
+    const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
     var location = this.getLocationInput.toLowerCase();
     db.child(location).remove()
     .then(() => {
