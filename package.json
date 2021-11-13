@@ -1,0 +1,31 @@
+{
+  "name": "school",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch backend --exec node --experimental-json-modules backend/server.js",
+    "build": "cd frontend && npm install && npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.4",
+    "@firebase/auth": "^0.18.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "axios": "^0.23.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "firebase": "^9.1.0",
+    "firebase-admin": "^9.11.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.13",
+    "path": "^0.12.7"
+  }
+}
