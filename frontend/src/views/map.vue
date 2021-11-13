@@ -12,7 +12,7 @@
         <input type="text" v-model="getLocationInput" id="q" placeholder="search for a location..." />  
         
         <button class="searchButton" v-on:click.prevent="getLocation" :disabled="ifData">
-             <font-awesome-icon :icon="myIcon" />
+             🔍
         </button>
         <button class="clearButton" v-if="ifData" @click="clearData">Clear Search</button>
       </div>
@@ -291,10 +291,8 @@
 import HeatMap from '@/components/Heatmap.vue'
 import Card from '@/components/Card.vue'
 import NavBar from '@/components/navBar.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {getLL} from '../helpers/getLL.js'
 import {getInfo} from '../helpers/getinfo.js'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import FavouriteButton from '@/components/favourite.vue'
 import DeleteButton from '@/components/delete.vue'
@@ -303,14 +301,13 @@ import firebase from '../helpers/firebaseconfig'
 
 export default {
   name: 'Mapper',
-  components: {HeatMap,NavBar, FontAwesomeIcon,Card, FavouriteButton, DeleteButton},
+  components: {HeatMap,NavBar,Card, FavouriteButton, DeleteButton},
   data() {
     return {
       open: null,
       center: {lat: 1.3521, lng: 103.8198},
       lat: 1.3521,
       lng: 103.8198,
-      myIcon: faSearch,
       zoom: 11,
       markers: [
           

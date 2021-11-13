@@ -2,14 +2,8 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import router from './router'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import VTypical from 'vue-typical'
 
-library.add(faUserSecret)
-library.add(faSearch)
 
 import VueGoogleMaps from '@fawmi/vue-google-maps'
 
@@ -22,6 +16,6 @@ app.use(router).use(VueGoogleMaps, {
         libraries : ["places" , "visualization"]
     },
     autobindAllEvents: true,
-}).use(VTypical).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+}).use(VTypical).mount('#app')
 // createApp(App).use(router).mount('#app')
 

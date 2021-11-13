@@ -16,7 +16,7 @@
         <div class="inputFeatureContainer">
           <h1>Where would you like to go?</h1>
           <div class="inputFakeSearch">
-            <div class="inputFeature"><font-awesome-icon :icon="myIcon" class="fakeButton"/> <v-typical
+            <div class="inputFeature">🔍 <v-typical
                 class="blink"
                 :steps="['Bishan', 3000, 'Raffles Place', 3000, 'Newton', 3000]"
                 :loop="Infinity"
@@ -50,17 +50,14 @@
 // import {getInfo} from '../helpers/getInfo.js'
 
 import VTypical from 'vue-typical';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
 
 export default {
   name: 'Home',
   components:{
     VTypical,
-    FontAwesomeIcon,
   }, data() {
     return {
-      myIcon: faSearch,   
     }
     
   },
@@ -111,7 +108,7 @@ export default {
   border:1px solid black;
   border-radius:5px;
   width: 300px;
-  height: 4vh;
+  height: 6vh;
   margin: 0 auto;
   display:flex;
   
