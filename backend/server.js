@@ -1,38 +1,25 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import morgan from 'morgan';
-import bodyParser from 'body-parser'
-import firebase from '@firebase/app'
+const express = require('express')
+const serveStatic = require('serve-static')
+const path = require('path')
 
-import firebaseConfig from './utils/config.js'
-
-import auth from './handlers/auth.js'
-dotenv.config();
 const app = express();
+const __check = path.resolve();
+console.log(__check)
+app.use('/' , serveStatic(path.join(__check, '/frontend/dist')))
 
-const port  = process.env.PORT;
-
-
-
-firebase.initializeApp(firebaseConfig)
-
-
-
-app.use(express.json());
-
-app.use(morgan("common"))
-
-app.get('/',(req,res) => {
-    res.send('Server is ready');
-});
-app.post('/register', auth.signUp);
-app.post('/login' , auth.signIn)
-
-
-app.use((err,req,res,next) =>{
-    res.status(500).send({ message: err.message });
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__check, '/frontend/dist/index.html'))
 })
 
-app.listen(port , () =>{
-    console.log("Server is up on " + port)
-})
+
+// //here we are configuring dist to serve app files
+// app.use('/', serveStatic(path.join(__dirname, '/dist')))
+
+// // this * route is to serve project on different page routes except root `/`
+// app.get(/.*/, function (req, res) {
+// 	res.sendFile(path.join(__dirname, '/dist/index.html'))
+// })
+
+const port = process.env.PORT || 8080
+app.listen(port)
+console.log(`app is listening on port: ${port}`)
