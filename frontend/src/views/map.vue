@@ -6,13 +6,13 @@
       <div class="row">
       <select v-model="getLocationInput" @change.prevent="getLocation" class="savedSearch" value="Saved Locations" name="dropdown" id="dropdownlist">
           <option selected value="">Saved Locations</option>
+          <option v-for="s in searches" :key="s" :value="s">{{s}}</option>
         </select>
         <FavouriteButton v-if="ifData & !this.searches.includes(this.getLocationInput)" @click="saveSearch" name="favorite"></FavouriteButton>
         <DeleteButton v-if="this.searches.includes(this.getLocationInput)" @click="deleteSearch" name="del"></DeleteButton>
         <input type="text" v-model="getLocationInput" id="q" placeholder="search for a location..." />  
         
-        <button class="searchButton" v-on:click.prevent="getLocation" :disabled="ifData">
-             🔍
+        <button class="searchButton" v-on:click.prevent="getLocation" :disabled="ifData">🔍
         </button>
         <button class="clearButton" v-if="ifData" @click="clearData">Clear Search</button>
       </div>
@@ -568,11 +568,11 @@ export default {
         this.searches = [];
         this.searches = await this.getAll()
         this.searches = JSON.parse(JSON.stringify(this.searches))
-        for (var loc of this.searches) {
-          document.getElementById("dropdownlist").innerHTML += `<option value="`+loc+`"
-          > ${loc}
-          </option>`
-        }
+        // for (var loc of this.searches) {
+        //   document.getElementById("dropdownlist").innerHTML += `<option value="`+loc+`"
+        //   > ${loc}
+        //   </option>`
+        // }
       } catch (e) {
           console.log(e);
       }
@@ -583,11 +583,15 @@ export default {
     const uid = userEmail.replace(/\W/g, '');
     const db = firebase.database().ref("/userPrefs/"+ uid + "/savedSearches");
     var location = this.getLocationInput.toLowerCase();
+    var index = this.searches.indexOf(location);
+    if (index !== -1) {
+      this.searches.splice(index, 1);
+    } 
     db.child(location).remove()
     .then(() => {
-          alert("You have deleted the location! Refresh the page to see it in the dropdown");
+          alert("You have deleted the location!");
         })
-        .catch(e => {
+    .catch(e => {
           alert(e);
         });
     }
